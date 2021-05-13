@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Ng2SmartTableModule, LocalDataSource } from 'ng2-smart-table';
+import { HttpClient } from '@angular/common/http';
 @Component({
   selector: 'app-component-smart-table',
   templateUrl: './component-smart-table.component.html',
@@ -7,104 +8,97 @@ import { Ng2SmartTableModule, LocalDataSource } from 'ng2-smart-table';
 })
 export class ComponentSmartTableComponent implements OnInit {
 
-  constructor() { 
-     this.source = new LocalDataSource(this.data);
+   data=[{
+    id: '',
+    firstname:'',
+    lastname:'',
+    birthdate:'',
+    address: ''
+   }]
+
+   source: LocalDataSource;
+  constructor(private http: HttpClient) { 
+
+    this.http.get<any>('/api/customers').subscribe(data1 => {
+
+      this.data.pop();
+      data1.forEach((element: { addressList: any[]; id: any; fname: any; lname: any; birthdate: any; }) => {
+
+        console.log(element.addressList[0]);
+        let addresses=element.addressList[0];
+
+        
+
+        this.data.push({
+          id: element.id,
+          firstname: element.fname,
+          lastname: element.lname,
+          birthdate: element.birthdate,
+          address: addresses.stree+' '+ addresses.zipcode+' '+ addresses.city
+      })
+
+      this.source = new LocalDataSource(this.data);
+        
+      });
+
+
+
+      
+    })
+
+    this.source = new LocalDataSource(this.data);
+    
   }
 
   ngOnInit(): void {
+
+
   }
 
   settings = {
+    delete:{
+    confirmDelete:false,
+    deleteButtonContent: '<span>&#128465;&#65039;</span>',
+    },
+    add:{
+      confirmAdd:false,
+      addButtonContent: '<span>&#10010;</span>',
+      createButtonContent: '<span>&#10004;</span>',
+      cancelButtonContent: '<span>&#10006;</span>',
+      },
+      edit:{
+        confirmSave:false,
+        editButtonContent: '<span>&#9998;</span>',
+        saveButtonContent: '<span>&#10004;</span>',
+        cancelButtonContent: '<span>&#10006;</span>',
+        },
     columns: {
+   
       id: {
         title: 'ID',
         filter: false,
       },
-      name: {
-        title: 'Full Name',
+      firstname: {
+        title: 'First Name',
         filter: false,
       },
-      username: {
-        title: 'User Name',
+      lastname: {
+        title: 'Last Name',
         filter: false,
       },
-      email: {
-        title: 'Email',
+      birthdate: {
+        title: 'Birthdate',
         filter: false,
+      },
+      address:{
+        title: 'Addres',
+        filter: false,
+
       },
     },
   };
-
-  data = [
-    {
-      id: 1,
-      name: 'Leanne Graham',
-      username: 'Bret',
-      email: 'Sincere@april.biz',
-    },
-    {
-      id: 2,
-      name: 'Ervin Howell',
-      username: 'Antonette',
-      email: 'Shanna@melissa.tv',
-    },
-    {
-      id: 3,
-      name: 'Clementine Bauch',
-      username: 'Samantha',
-      email: 'Nathan@yesenia.net',
-    },
-    {
-      id: 4,
-      name: 'Patricia Lebsack',
-      username: 'Karianne',
-      email: 'Julianne.OConner@kory.org',
-    },
-    {
-      id: 5,
-      name: 'Chelsey Dietrich',
-      username: 'Kamren',
-      email: 'Lucio_Hettinger@annie.ca',
-    },
-    {
-      id: 6,
-      name: 'Mrs. Dennis Schulist',
-      username: 'Leopoldo_Corkery',
-      email: 'Karley_Dach@jasper.info',
-    },
-    {
-      id: 7,
-      name: 'Kurtis Weissnat',
-      username: 'Elwyn.Skiles',
-      email: 'Telly.Hoeger@billy.biz',
-    },
-    {
-      id: 8,
-      name: 'Nicholas Runolfsdottir V',
-      username: 'Maxime_Nienow',
-      email: 'Sherwood@rosamond.me',
-    },
-    {
-      id: 9,
-      name: 'Glenna Reichert',
-      username: 'Delphine',
-      email: 'Chaim_McDermott@dana.io',
-    },
-    {
-      id: 10,
-      name: 'Clementina DuBuque',
-      username: 'Moriah.Stanton',
-      email: 'Rey.Padberg@karina.biz',
-    },
-    {
-      id: 11,
-      name: 'Nicholas DuBuque',
-      username: 'Nicholas.Stanton',
-      email: 'Rey.Padberg@rosamond.biz',
-    },
-  ];
-
-  source: LocalDataSource;
+    
+  
 
 
   onSearch(query: string = '') {
@@ -115,15 +109,15 @@ export class ComponentSmartTableComponent implements OnInit {
         search: query,
       },
       {
-        field: 'name',
+        field: 'firstname',
         search: query,
       },
       {
-        field: 'username',
+        field: 'lastname',
         search: query,
       },
       {
-        field: 'email',
+        field: 'birthdate',
         search: query,
       },
     ], false);
