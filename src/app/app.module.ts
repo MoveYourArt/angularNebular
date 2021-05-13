@@ -14,6 +14,7 @@ import { ComponentSmartTableComponent } from './component-smart-table/component-
 import { ComponentSidebarFixedComponent } from './component-sidebar-fixed/component-sidebar-fixed.component';
 import { ComponentDashboardLayoutComponent } from './component-dashboard-layout/component-dashboard-layout.component';
 import { FormsModule } from '@angular/forms';
+import { UserTableComponent } from './user-table/user-table.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { FormsModule } from '@angular/forms';
     AppComponent,
     ComponentSmartTableComponent,
     ComponentSidebarFixedComponent,
-    ComponentDashboardLayoutComponent
+    ComponentDashboardLayoutComponent,
+    UserTableComponent
  
   ],
   imports: [

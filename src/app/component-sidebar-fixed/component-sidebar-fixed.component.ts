@@ -12,13 +12,18 @@ export class ComponentSidebarFixedComponent implements OnInit {
      title: 'Costumers',
      icon: 'grid-outline',
      target: '_blank',
-     link: '/costumers'
+     link: '/'
    },
    {
     title: 'Users',
-    icon: 'pricetags-outline',
+    icon: 'person-outline',
     target: '_blank',
     link: '/users'
+  },
+  {
+    title: 'Logout',
+    icon: 'person-delete-outline',
+    url: 'logout'
   }];
   constructor(private sidebarService: NbSidebarService) {
  
